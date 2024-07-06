@@ -1,14 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
-
 import 'package:travelapp/db/db_function/tripdb_function.dart';
 import 'package:travelapp/db/db_model/atripdetail_modal.dart';
 import 'package:travelapp/db/db_model/trip_model.dart';
 
-// ignore: must_be_immutable
 class NearbyPlaceaddPage extends StatefulWidget {
   Tripmodel placeobj;
   NearbyPlaceaddPage({
@@ -17,16 +15,16 @@ class NearbyPlaceaddPage extends StatefulWidget {
   });
 
   @override
-  State<NearbyPlaceaddPage> createState() => _NearbyPlaceaddPageState();
+  State<NearbyPlaceaddPage> createState() => NearbyPlaceaddPageState();
 }
 
-class _NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
+class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
   late Tripmodel placeobj1;
   final GlobalKey<FormState> placepageformkey = GlobalKey<FormState>();
-  int _index = 0;
-  final int _totalSteps = 4;
   final TextEditingController placename = TextEditingController();
-  //final TextEditingController placedescriptaion = TextEditingController();
+  final TextEditingController placedescription = TextEditingController();
+  List<Step> steps = [];
+  int _index = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -34,154 +32,269 @@ class _NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
     placeobj1 = widget.placeobj;
   }
 
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      // mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 125),
-          child: CustomButton(
-              child: CustomText(text: 'Add Nearby place'),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) => Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: SingleChildScrollView(
-                            child: Container(
-                              height: 320,
-                              width: double.infinity,
-                              padding: EdgeInsets.only(top: 30),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+    steps.clear();
+
+    placeobj1.nearbyPlacemodal?.forEach((element) {
+      steps.add(Step(
+          title: Text(element.placename),
+          content: Row(
+            children: [
+              Text(element.description ?? ''),
+              const SizedBox(
+                width: 100,
+              ),
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title:
+                                  const CustomText(text: 'Confirm to delete'),
+                              content: const CustomText(
+                                  text:
+                                      'Are you sure ,you wanted to delete this trip'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const CustomText(text: 'No')),
+                                TextButton(
+                                    onPressed: () async {
+                                      placeobj1.nearbyPlacemodal
+                                          ?.remove(element);
+                                      await Tripdb().editDetails(
+                                          placeobj1, placeobj1.key);
+
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pop(context);
+                                      setState(() {});
+                                    },
+                                    child: const CustomText(text: 'Yes'))
+                              ],
+                            ));
+                  },
+                  icon: const Icon(Icons.delete)),
+            ],
+          )));
+    });
+    if (_index >= steps.length) {
+      _index = steps.length - 1;
+    } else if (_index < 0) {
+      _index = 0;
+    }
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      //!
+                      height: 360,
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(top: 20),
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
+                          color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 20,
+                          left: 20,
+                        ),
+                        child: Form(
+                          //!
+                          key: placepageformkey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              //!
+                              Container(
+                                width: 40,
+                                height: 6.0,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2.5),
                                   color:
-                                      const Color.fromARGB(255, 0, 117, 212)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Form(
-                                  key: placepageformkey,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CustomText(
-                                          text: 'Add place want to visit',
-                                          size: 20,
-                                          color: Colors.white),
-                                      TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        decoration: InputDecoration(
-                                            labelText: 'Place name',
-                                            labelStyle:
-                                                TextStyle(color: Colors.white),
-                                            suffixIcon: Icon(Icons.place)),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'please add your Place';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                      ),
-                                      // TextFormField(
-                                      //   autovalidateMode:
-                                      //       AutovalidateMode.onUserInteraction,
-                                      //   decoration: InputDecoration(
-                                      //       labelText: 'Description',
-                                      //       labelStyle:
-                                      //           TextStyle(color: Colors.white),
-                                      //       suffixIcon:
-                                      //           Icon(Icons.description_outlined)),
-                                      //   validator: (value) {
-                                      //     if (value == null || value.isEmpty) {
-                                      //       return 'please add your Description';
-                                      //     } else {
-                                      //       return null;
-                                      //     }
-                                      //   },
-                                      // ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      CustomButton(
-                                          color: Colors.white,
-                                          child: CustomText(text: 'Add'),
-                                          onPressed: () {
-                                            bottomsheetaddbuttonclicked(
-                                                placeobj1.key);
-                                          })
-                                    ],
-                                  ),
+                                      const Color.fromARGB(255, 202, 202, 202),
                                 ),
                               ),
-                            ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const CustomText(
+                                text: 'Save nearest places',
+                                size: 20,
+                                color: Colors.black, //!
+                                fontweight: FontWeight.bold,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: placename,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                
+                                decoration: InputDecoration(
+                                  hintText: 'Type.. place name',
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
+                                    ),
+                                    suffixIconColor: const Color.fromARGB(
+                                        255, 121, 120, 120),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          placename.clear();
+                                        },
+                                        icon: const Icon(
+                                            Icons.restart_alt_rounded)),
+                                    labelText: 'Place',
+                                    labelStyle: const TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 121, 120, 120))),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'please add place name';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              TextFormField(
+                                controller: placedescription,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
+                                    ),
+                                    suffixIconColor: const Color.fromARGB(
+                                        255, 121, 120, 120),
+                                    hintText: ' Type... description',
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          placedescription.clear();
+                                        },
+                                        icon: const Icon(
+                                            Icons.restart_alt_rounded)),
+                                    labelText: 'Description',
+                                    labelStyle: const TextStyle(
+                                        color: Color.fromARGB(
+                                            255, 121, 120, 120))),
+                                validator: (value) {
+                                  //!
+                                  if (value == null || value.isEmpty) {
+                                    return 'please add description';
+                                  } else if (value.trim() ==
+                                      value.replaceAll(RegExp(r'[^\d]'), '')) {
+                                    return 'Description should not only contain numbers.';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              CustomButton(
+                                  width: double.infinity,
+                                  color: Colors.blue,
+                                  child: const CustomText(
+                                    color: Colors.white,
+                                    text: 'Save',
+                                  ),
+                                  onPressed: () {
+                                    bottomsheetaddbuttonclicked(placeobj1.key);
+                                  }),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const CustomText(
+                                    text: 'Cancel',
+                                    color: Color.fromARGB(255, 101, 100, 100),
+                                  ))
+                            ],
                           ),
-                        ));
-              }),
-        ),
-        placeobj1.tripDetail != null && placeobj1.tripDetail!.nearplace != null
-            ? Expanded(
-                child: Stepper(
-                  currentStep: _index,
-                  onStepCancel: () {
-                    if (_index > 0) {
-                      setState(() {
-                        _index -= 1;
-                      });
-                    }
-                  },
-                  onStepContinue: () {
-                    if (_index < _totalSteps - 1) {
-                      setState(() {
-                        _index += 1;
-                      });
-                    } else {
-                      // Show a completion message or perform another action
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Nearby places Completed!'),
-                          backgroundColor: Colors.blue,
-                          shape: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
                         ),
-                      );
-                    }
-                  },
-                  onStepTapped: (int index) {
-                    setState(() {
-                      _index = index;
-                    });
-                  },
-                  steps: List.generate(_totalSteps, (index) {
-                    return Step(
-                      title: Text(placeobj1.tripDetail!.nearplace![index]),
-                      content: Text(''),
-                      isActive: _index >= index,
-                      state: _index > index
-                          ? StepState.complete
-                          : StepState.indexed,
-                    );
-                  }),
-                ),
-              )
-            : SizedBox(),
-      ],
+                      ),
+                    ),
+                  ),
+                );
+              }).then((value) {
+            setState(() {});
+             
+                 placedescription.clear();
+              placename.clear();
+              
+          });
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: steps.isEmpty
+          ? const Center(child: CustomText(text: 'No places added yet.'))
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stepper(
+                    key: ValueKey('key ${steps.length}'),
+                    currentStep: _index,
+                    onStepCancel: () {
+                      if (_index > 0) {
+                        setState(() {
+                          _index -= 1;
+                        });
+                      }
+                    },
+                    onStepContinue: () {
+                      if (_index < steps.length - 1) {
+                        setState(() {
+                          _index += 1;
+                        });
+                      }
+                    },
+                    onStepTapped: (int index) {
+                      setState(() {
+                        _index = index;
+                      });
+                    },
+                    steps: steps,
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
   bottomsheetaddbuttonclicked(dynamic key) async {
-    if (placepageformkey.currentState!.validate()) {
-      final newplace = TripDetail(nearplace: [placename.text]);
-      placeobj1.tripDetail?.nearplace == null
-          ? placeobj1.tripDetail = newplace
-          : placeobj1.tripDetail!.nearplace!.add(placename.text);
+    final placeName = placename.text.trim();
+    final placeDetail = placedescription.text.trim();
 
-      await Tripdb().addnearbyplaces(placeobj1, key);
-      Navigator.pop(context);
+    if (placepageformkey.currentState!.validate()) {
+      if (placeName.isNotEmpty && placeDetail.isNotEmpty) {
+        final newplace = NearbyPlacemodal(
+            description: placedescription.text, placename: placename.text);
+        placeobj1.nearbyPlacemodal == null
+            ? placeobj1.nearbyPlacemodal = [newplace]
+            : placeobj1.nearbyPlacemodal!.add(newplace);
+
+        await Tripdb().addnearbyplaces(placeobj1, key);
+        Navigator.pop(context);
+      }
     }
   }
 }

@@ -23,7 +23,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
   late XFile editimage;
   @override
   void initState() {
-    // TODO: implement initState
+    
     objEditBlog = widget.editBlogObj;
     editBlogContent =
         TextEditingController(text: widget.editBlogObj.blogContent);
@@ -40,7 +40,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
         backgroundColor: Colors.blue,
         actions: [
           TextButton(
-              onPressed: () => blogUpdate(widget.key),
+              onPressed: () => blogUpdate(objEditBlog.key),
               child: CustomText(
                 text: 'Update',
                 color: Colors.black,
@@ -93,9 +93,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
                 SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Content'),
-                ),
+                
                 TextFormField(
                   controller: editBlogContent,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -131,14 +129,18 @@ class _EditBlogpageState extends State<EditBlogpage> {
   blogUpdate(key) async {
     var title = editBlogTitle.text.trim();
     var content = editBlogContent.text.trim();
-    var image = editimage?.path.toString();
-    if (title.isNotEmpty && content.isNotEmpty) {
+    var image = editimage.path ??'';
+    if (title.isNotEmpty && content.isNotEmpty&&image.isNotEmpty) {
       if (editBlogformkey.currentState!.validate()) {
         final blogKit = BlogModal(
-            blogTitle: title, blogImage: image??'', blogContent: content);
+            blogTitle: title, blogImage: image, blogContent: content); 
         await BlogDbFunc().editBlog(key, blogKit);
+        setState(() {
+          
+        });
+       
         Navigator.pop(context);
-        Navigator.pop(context);
+        
       }
     }
   }

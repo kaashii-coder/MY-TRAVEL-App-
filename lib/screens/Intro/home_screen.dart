@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/blog_function.dart';
@@ -47,31 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.grey,
                   size: 18,
                 ),
-                trailing: TextButton(
-                    child: const CustomText(
-                      text: 'See more>>',
-                      color: Color.fromARGB(255, 206, 81, 81),
-                      size: 16,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: CustomText(
-                              text:
-                                  'if you want to see more about your trips click bottom second button',
-                            ),
-                          );
-                        }
-                      );
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => MyJourneyScreen()));
-                    }),
+               
               ),
-              SizedBox(
+                SizedBox(
                 width: double.infinity,
                 height: 200,
                 child: ValueListenableBuilder(
@@ -84,18 +63,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 1),
                           itemBuilder: (context, index) {
-                            return homelist[index].image == null
-                                ? Card(
+                            return homelist[index].image != null
+                            ?kIsWeb?
+                              Card(
                                     child: SizedBox(
                                       height: 150,
                                       width: 150,
                                       child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          child: Image.asset(
-                                            'Asset/Image/WhatsApp Image 2024-04-29 at 12.24.29_1a26d094.jpg',
-                                            fit: BoxFit.cover,
-                                          )),
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: Image.network(
+                                          homelist[index].image!,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
                                     ),
                                   )
                                 : Card(
@@ -110,7 +90,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                     ),
+                                  ):
+                                Card(
+                                    child: SizedBox(
+                                      height: 150,
+                                      width: 150,
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          child: Image.asset(
+                                            'Asset/Image/WhatsApp Image 2024-04-29 at 12.24.29_1a26d094.jpg',
+                                            fit: BoxFit.cover,
+                                          )),
+                                    ),
                                   );
+                                
                           });
                     }),
               ),
@@ -128,29 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.grey,
                   size: 18,
                 ),
-                trailing: TextButton(
-                    child: const CustomText(
-                      text: 'See more>>',
-                      color: Color.fromARGB(255, 206, 81, 81),
-                      size: 16,
-                    ),
-                    onPressed: () {
-                       showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(backgroundColor: Colors.blue,
-                            content: CustomText(
-                              text:
-                                  'if you want to see more about your blogs click bottom forth button',color: Colors.white,
-                            ),
-                          );
-                        }
-                      );
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => MyJourneyScreen()));
-                    }),
+               
               ),
               SizedBox(
                 width: double.infinity,
@@ -165,21 +137,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 1),
                           itemBuilder: (context, index) {
-                            return homeBlogList[index].blogImage == null
-                                ? Card(
+                            return homeBlogList[index].blogImage != null
+                                ?kIsWeb?
+                                Card(
                                     child: SizedBox(
                                       height: 150,
                                       width: 150,
                                       child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          child: Image.asset(
-                                            'Asset/Image/WhatsApp Image 2024-04-29 at 12.24.29_1a26d094.jpg',
-                                            fit: BoxFit.cover,
-                                          )),
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: Image.network(
+                                          homeBlogList[index].blogImage,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                : Card(
+                                  ):
+                                Card(
                                     child: SizedBox(
                                       height: 150,
                                       width: 150,
@@ -191,7 +164,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                     ),
+                                  ): 
+                                Card(
+                                    child: SizedBox(
+                                      height: 150,
+                                      width: 150,
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          child: Image.asset(
+                                            'Asset/Image/WhatsApp Image 2024-04-29 at 12.24.29_1a26d094.jpg',
+                                            fit: BoxFit.cover,
+                                          )),
+                                    ),
                                   );
+                                
                           });
                     }),
               ),

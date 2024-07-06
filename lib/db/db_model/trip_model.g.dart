@@ -21,7 +21,11 @@ class TripmodelAdapter extends TypeAdapter<Tripmodel> {
       startdate: fields[1] as DateTime,
       enddate: fields[2] as DateTime,
       budget: fields[3] as int,
-      tripDetail: fields[5] as TripDetail?,
+      checklistModal: (fields[6] as List?)?.cast<ChecklistModal>(),
+      nearbyPlacemodal: (fields[5] as List?)?.cast<NearbyPlacemodal>(),
+      notesModal: (fields[7] as List?)?.cast<NotesModal>(),
+      expenceModal: (fields[9] as List?)?.cast<ExpenceModal>(),
+      photosModal: (fields[8] as List?)?.cast<PhotosModal>(),
       image: fields[4] as String?,
     );
   }
@@ -29,7 +33,7 @@ class TripmodelAdapter extends TypeAdapter<Tripmodel> {
   @override
   void write(BinaryWriter writer, Tripmodel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.destination)
       ..writeByte(1)
@@ -41,7 +45,15 @@ class TripmodelAdapter extends TypeAdapter<Tripmodel> {
       ..writeByte(4)
       ..write(obj.image)
       ..writeByte(5)
-      ..write(obj.tripDetail);
+      ..write(obj.nearbyPlacemodal)
+      ..writeByte(6)
+      ..write(obj.checklistModal)
+      ..writeByte(7)
+      ..write(obj.notesModal)
+      ..writeByte(8)
+      ..write(obj.photosModal)
+      ..writeByte(9)
+      ..write(obj.expenceModal);
   }
 
   @override

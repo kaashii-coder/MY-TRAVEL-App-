@@ -10,7 +10,6 @@ class CustomSearchDelegate extends SearchDelegate{
         query='';
       }, icon: const Icon(Icons.clear))
     ];
-    // TODO: implement buildActions
   }
 
   @override
@@ -19,19 +18,19 @@ class CustomSearchDelegate extends SearchDelegate{
       close(context, null);
       //close the page and go back
     }, icon: const Icon(Icons.arrow_back));
-    // TODO: implement buildLeading
+  
   }
 
   @override
   Widget buildResults(BuildContext context) {
    return MyJourneyScreen(query: query);
-    // TODO: implement buildResults
+  
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
    return MyJourneyScreen(query: query);
-    // TODO: implement buildSuggestions
+  
   }
 
 }

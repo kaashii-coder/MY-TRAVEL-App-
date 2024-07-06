@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/custom_widgests/search_delegate.dart';
 import 'package:travelapp/db/db_function/tripdb_function.dart';
 import 'package:travelapp/db/db_model/trip_model.dart';
+import 'package:travelapp/screens/Creater/trips_add_screen.dart';
 import 'package:travelapp/screens/Journey/journey_custom_main.dart';
 
 class MyJourneyScreen extends StatefulWidget {
@@ -21,6 +23,7 @@ class MyJourneyScreen extends StatefulWidget {
 
 class _MyJourneyScreenState extends State<MyJourneyScreen>
     with SingleTickerProviderStateMixin {
+  var indexCarrier;
   late TabController _tabController;
   List<Tripmodel> ongoingtrips = [];
   List<Tripmodel> completedtrips = [];
@@ -31,9 +34,8 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
 
     querysearch = widget.query ?? '';
     _tabController =
-        TabController(length: 3, vsync: this); // Change the length as needed
-    // Tripdb().gettrips();
-    // filterTrips();
+        TabController(length: 3, vsync: this); 
+   
     fetchAndFilterTrips();
   }
 
@@ -44,28 +46,30 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(floatingActionButton: FloatingActionButton(onPressed: (){ Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AddTripscrren()));},child:Icon(Icons.add) ,),
       appBar: AppBar(
-        title: const CustomText(text: 'My Journeys'),
+        title: const CustomText(text: 'My Journeys',color: Colors.white,),
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
               onPressed: () {
                 showSearch(context: context, delegate: CustomSearchDelegate());
               },
-              icon: Icon(Icons.search_rounded))
+              icon: const Icon(Icons.search_rounded,color: Colors.white,))
         ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: const Color.fromARGB(255, 0, 0, 0),
           labelColor: Colors.black,
+          unselectedLabelColor: Colors.white,
           tabs: const [
             Tab(
               text: 'All Trips',
             ),
             Tab(text: 'Ongoing'),
             Tab(text: 'Completed'),
-            // Tab(text: 'Incomplete'),
+            
           ],
         ),
       ),
@@ -88,18 +92,17 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                 .contains(querysearch))
                             .toList();
                     return results.isEmpty
-                        ? Center(child: Text('no result'))
+                        ? const Center(child: Text('no result'))
                         : ListView.builder(
                             shrinkWrap: true,
                             itemCount: results.length,
                             itemBuilder: (context, index) {
                               var tripplace = results[index].destination;
-                              var tripSTdate = DateFormat('dd:MM:yyyy')
+                              var tripSTdate = DateFormat('dd/MM/yyyy')
                                   .format(results[index].startdate);
                               var tripbudget = results[index].budget.toString();
                               final data = results[index];
-                              
-                              
+                              indexCarrier = index;
                               return Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: GestureDetector(
@@ -119,7 +122,19 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                       children: [
                                         list[index].image != null &&
                                                 results[index].image!.isNotEmpty
-                                            ? SizedBox(
+                                            ?kIsWeb?
+                                            SizedBox(
+                                                width: double.infinity,
+                                                height: 150,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  child: Image.network(
+                                                    list[index].image!,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                )): 
+                                            SizedBox(
                                                 width: double.infinity,
                                                 height: 150,
                                                 child: ClipRRect(
@@ -171,11 +186,31 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                                             String>>[
                                                       PopupMenuItem<String>(
                                                         onTap: () {
-                                                          deletingFunc(
-                                                              data.key);
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) =>
+                                                                      AlertDialog(
+                                                                        title: const CustomText(
+                                                                            text:
+                                                                                'Confirm to delete'),
+                                                                        content:
+                                                                            const CustomText(text: 'Are you sure ,you wanted to delete this trip'),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                              onPressed: () {},
+                                                                              child: const CustomText(text: 'No')),
+                                                                          TextButton(
+                                                                              onPressed: () {
+                                                                                deletingFunc(data.key);
+                                                                              },
+                                                                              child: const CustomText(text: 'Yes'))
+                                                                        ],
+                                                                      ));
+                                                          
                                                         },
                                                         value: 'option1',
-                                                        child: Text('Delete'),
+                                                        child: const Text('Delete'),
                                                       ),
                                                       const PopupMenuItem<
                                                           String>(
@@ -194,18 +229,7 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                               ),
                                               Text(
                                                   "Your planned budget is: $tripbudget"),
-                                              const LinearProgressIndicator(
-                                                backgroundColor: Colors.grey,
-                                                value: 0.10,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              const CustomText(
-                                                text: 'Your spends:',
-                                                color: Color.fromARGB(
-                                                    255, 116, 114, 114),
-                                              ),
+                                              
                                             ],
                                           ),
                                         )
@@ -229,11 +253,12 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                         itemCount: ongoingtrips.length,
                         itemBuilder: (context, index) {
                           var tripplace = ongoingtrips[index].destination;
-                          var tripSTdate = DateFormat('dd:MM:yyyy')
+                          var tripSTdate = DateFormat('dd/MM/yyyy')
                               .format(ongoingtrips[index].startdate);
                           var tripbudget =
                               ongoingtrips[index].budget.toString();
                           final data = ongoingtrips[index];
+                          indexCarrier = index;
                           return Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: GestureDetector(
@@ -253,12 +278,23 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                             ongoingtrips[index]
                                                 .image!
                                                 .isNotEmpty
-                                        ? SizedBox(
+                                        ?kIsWeb?
+                                        SizedBox(
                                             width: double.infinity,
                                             height: 150,
-                                            child: Image.file(
-                                              File(ongoingtrips[index].image!),
+                                            child: Image.network(
+                                              ongoingtrips[index].image!,
                                               fit: BoxFit.fill,
+                                            )): 
+                                        SizedBox(
+                                            width: double.infinity,
+                                            height: 150,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(4),
+                                              child: Image.file(
+                                                File(ongoingtrips[index].image!),
+                                                fit: BoxFit.fill,
+                                              ),
                                             ))
                                         : Card(
                                             child: SizedBox(
@@ -270,7 +306,7 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                                 )),
                                           ),
                                     Container(
-                                      padding: const EdgeInsets.only(
+                                      padding: const EdgeInsets.only(top: 10,
                                           bottom: 10, left: 10, right: 10),
                                       child: Column(
                                         crossAxisAlignment:
@@ -286,23 +322,9 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                                 color: Colors.black,
                                                 fontweight: FontWeight.w500,
                                               ),
-                                              PopupMenuButton<String>(
-                                                onSelected: (String value) {},
-                                                itemBuilder: (BuildContext
-                                                        context) =>
-                                                    <PopupMenuEntry<String>>[
-                                                  const PopupMenuItem<String>(
-                                                    value: 'option1',
-                                                    child: Text('Delete'),
-                                                  ),
-                                                  const PopupMenuItem<String>(
-                                                    value: 'option2',
-                                                    child: Text('Edit'),
-                                                  ),
-                                                ],
-                                              ),
+                                              
                                             ], // End of Row children
-                                          ),
+                                          ), SizedBox(height: 10,),
                                           CustomText(
                                             text: 'Start on $tripSTdate',
                                             fontweight: FontWeight.bold,
@@ -311,18 +333,7 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                           ),
                                           Text(
                                               "Your planned budget is: $tripbudget"),
-                                          const LinearProgressIndicator(
-                                            backgroundColor: Colors.grey,
-                                            value: 0.10,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const CustomText(
-                                            text: 'Your spends:',
-                                            color: Color.fromARGB(
-                                                255, 116, 114, 114),
-                                          ),
+                                         
                                         ],
                                       ),
                                     )
@@ -345,11 +356,12 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                         itemCount: completedtrips.length,
                         itemBuilder: (context, index) {
                           var tripplace = completedtrips[index].destination;
-                          var tripSTdate = DateFormat('dd:MM:yyyy')
+                          var tripSTdate = DateFormat('dd/MM/yyyy')
                               .format(completedtrips[index].startdate);
                           var tripbudget =
                               completedtrips[index].budget.toString();
                           final data = completedtrips[index];
+                          indexCarrier = index;
                           return Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: GestureDetector(
@@ -369,13 +381,24 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                             completedtrips[index]
                                                 .image!
                                                 .isNotEmpty
-                                        ? SizedBox(
+                                        ?kIsWeb?
+                                        SizedBox(
                                             width: double.infinity,
                                             height: 150,
-                                            child: Image.file(
-                                              File(
-                                                  completedtrips[index].image!),
+                                            child: Image.network(
+                                              
+                                                  completedtrips[index].image!,
                                               fit: BoxFit.fill,
+                                            )): 
+                                        SizedBox(
+                                            width: double.infinity,
+                                            height: 150,
+                                            child: ClipRRect(borderRadius: BorderRadius.circular(4),
+                                              child: Image.file(
+                                                File(
+                                                    completedtrips[index].image!),
+                                                fit: BoxFit.fill,
+                                              ),
                                             ))
                                         : Card(
                                             child: SizedBox(
@@ -387,7 +410,7 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                                 )),
                                           ),
                                     Container(
-                                      padding: const EdgeInsets.only(
+                                      padding: const EdgeInsets.only(top: 10,
                                           bottom: 10, left: 10, right: 10),
                                       child: Column(
                                         crossAxisAlignment:
@@ -403,23 +426,10 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                                 color: Colors.black,
                                                 fontweight: FontWeight.w500,
                                               ),
-                                              PopupMenuButton<String>(
-                                                onSelected: (String value) {},
-                                                itemBuilder: (BuildContext
-                                                        context) =>
-                                                    <PopupMenuEntry<String>>[
-                                                  const PopupMenuItem<String>(
-                                                    value: 'option1',
-                                                    child: Text('Delete'),
-                                                  ),
-                                                  const PopupMenuItem<String>(
-                                                    value: 'option2',
-                                                    child: Text('Edit'),
-                                                  ),
-                                                ],
-                                              ),
+                                              
                                             ], // End of Row children
                                           ),
+                                          SizedBox(height: 10,),
                                           CustomText(
                                             text: 'Start on $tripSTdate',
                                             fontweight: FontWeight.bold,
@@ -428,18 +438,7 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
                                           ),
                                           Text(
                                               "Your planned budget is: $tripbudget"),
-                                          const LinearProgressIndicator(
-                                            backgroundColor: Colors.grey,
-                                            value: 0.10,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const CustomText(
-                                            text: 'Your spends:',
-                                            color: Color.fromARGB(
-                                                255, 116, 114, 114),
-                                          ),
+                                          
                                         ],
                                       ),
                                     )
@@ -463,10 +462,7 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
   filterTrips() {
     final now = DateTime.now();
     final allTrips = tripnotifier.value;
-    // currentTrip = allTrips
-    //     .where(
-    //         (trip) => trip.startDate.isBefore(now) && trip.endDate.isAfter(now))
-    //     .toList();
+    
     completedtrips =
         allTrips.where((trip) => trip.enddate.isBefore(now)).toList();
     ongoingtrips =
@@ -474,8 +470,9 @@ class _MyJourneyScreenState extends State<MyJourneyScreen>
     setState(() {});
   }
 
-  deletingFunc(dynamic key) {
-    Tripdb().deletetrip(key);
-    print('deletepagefunc');
+  deletingFunc(dynamic key) async {
+    await Tripdb().deletetrip(key);
+    Navigator.pop(context);
   }
+   
 }

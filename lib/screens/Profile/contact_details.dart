@@ -25,7 +25,7 @@ class ContactPage extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Text(
-              'Email: example@example.com',
+              'Email: akashpsa.dev@gmail.com',
               style: TextStyle(fontSize: 16.0),
             ),
             Text(
@@ -33,7 +33,7 @@ class ContactPage extends StatelessWidget {
               style: TextStyle(fontSize: 16.0),
             ),
             Text(
-              'Address: 1234 Main Street, City, Country',
+              'Address: Indian',
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 20.0),
@@ -47,23 +47,23 @@ class ContactPage extends StatelessWidget {
             SizedBox(height: 10.0),
             Row(
               children: <Widget>[
-                Icon(Icons.facebook),
+                Icon(Icons.menu),
                 SizedBox(width: 10.0),
-                Text('Facebook: @yourpage'),
+                Text('Likedin: www.linkedin.com/in/akash-maroli-a53a502b0'),
               ],
             ),
             Row(
               children: <Widget>[
                 Icon(EvaIcons.menu),
                 SizedBox(width: 10.0),
-                Text('Twitter: @yourhandle'),
+                Text('Github: https://github.com/kaashii-coder'),
               ],
             ),
             Row(
               children: <Widget>[
                 Icon(EvaIcons.menu),
                 SizedBox(width: 10.0),
-                Text('Instagram: @yourhandle'),
+                Text('Instagram: devloper__field'),
               ],
             ),
           ],

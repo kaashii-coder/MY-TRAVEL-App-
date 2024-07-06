@@ -34,6 +34,7 @@ class BlogDbFunc extends ChangeNotifier {
   Future<void> editBlog(int key, BlogModal edblog) async {
     final box = await Hive.openBox<BlogModal>('blogDb');
     await box.putAt(key, edblog);
+    print('it s working');
     tripnotifier.value.clear();
     blogNotifier.notifyListeners();
     await box.close();

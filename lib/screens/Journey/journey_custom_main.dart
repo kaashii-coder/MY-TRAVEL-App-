@@ -11,7 +11,7 @@ import 'package:travelapp/screens/Journey/photo_collection.dart';
 
 // ignore: must_be_immutable
 class JourneyCustomMain extends StatefulWidget {
-  Tripmodel modelobj;
+  Tripmodel modelobj; 
   JourneyCustomMain({required this.modelobj, super.key});
 
   @override
@@ -19,6 +19,7 @@ class JourneyCustomMain extends StatefulWidget {
 }
 
 class _JourneyCustomMain extends State<JourneyCustomMain> {
+  late int indexSelect;
   late Tripmodel onetrip;
   late final List _pages;
   late int _selectedIndex = 0;
@@ -30,12 +31,12 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
     // int _selectedIndex = 0;
     _pages = [
        NearbyPlaceaddPage(placeobj: onetrip,),
-      const JourneyChecklistPage(),
-      const JourneynotesPage(),
+       JourneyChecklistPage(checklistData: onetrip,),
+       JourneynotesPage(data: onetrip,),
       JourneyPhotosPage(
         tripmodelobj: onetrip,
       ),
-       ExpenceListPage(),
+       ExpenceListPage(expenceobj:onetrip ),
     ];
   }
 
@@ -48,7 +49,7 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
           child: Stack(children: [
             Container(
               width: double.infinity,
-              height: 180,
+              height: 170,
               color: Colors.blue,
             ),
             Padding(
@@ -56,7 +57,7 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 50,
+                    height: 35,
                   ),
                   Card(
                       child: Container(
@@ -65,7 +66,7 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
                         color: const Color.fromARGB(255, 255, 255, 255),
                         borderRadius: BorderRadius.circular(10)),
                     width: double.infinity,
-                    height: 168,
+                    height: 158,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -115,11 +116,11 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
                               Icons.person_pin,
                               size: 45,
                             ),
-                            CustomButton(
-                                child: const CustomText(
-                                  text: 'Invite Friend',
-                                ),
-                                onPressed: () {})
+                            // CustomButton(
+                            //     child: const CustomText(
+                            //       text: 'Invite Friend',
+                            //     ),
+                            //     onPressed: () {})
                           ],
                         )
                       ],

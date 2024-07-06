@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
-import 'package:travelapp/screens/Intro/login_screen.dart';
-import 'package:travelapp/screens/Intro/signup_screen.dart';
+import 'package:travelapp/screens/Intro/create_profile_screen.dart';
 
 class LastOnboardScreen extends StatelessWidget {
   const LastOnboardScreen({super.key});
@@ -29,17 +28,17 @@ class LastOnboardScreen extends StatelessWidget {
             CustomButton(width: 280,
                 child: const Text('Login>>'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const LoginScreen()));
+                          builder: (context) => const ProfileCreateScreen()));
                 }),
-           CustomButton(width: 280,color: Colors.white,
-                  child: const Text('Signup>>'),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const SignUpScreen()));
-                  }),
+          //  CustomButton(width: 280,color: Colors.white,
+          //         child: const Text('Signup>>'),
+          //         onPressed: () {
+          //           Navigator.pushReplacement(context,
+          //               MaterialPageRoute(builder: (context) => const SignUpScreen()));
+          //         }),
           ],
         ),
       ),

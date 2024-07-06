@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
@@ -67,7 +68,17 @@ class _AddBlogpageState extends State<AddBlogpage> {
                             // color: Colors.blueGrey,
                             borderRadius: BorderRadius.circular(10)),
                         child: imageObj != null
-                            ? ClipRRect(
+                            ?kIsWeb?
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(9.5),
+                                child: Image.network(
+                                  
+                                    imageObj!.path,
+                                  
+                                  fit: BoxFit.cover,
+                                ),
+                              ): 
+                            ClipRRect(
                                 borderRadius: BorderRadius.circular(9.5),
                                 child: Image.file(
                                   File(
@@ -81,14 +92,12 @@ class _AddBlogpageState extends State<AddBlogpage> {
                 SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Content'),
-                ),
+                
                 TextFormField(
                   controller: blogContent,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   // focusNode: _focusNode,
-                  maxLines:100,
+                  maxLines:50,
                       // _isFocused ? 5 : 1, // Increase maxLines when focused
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -127,7 +136,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
             blogTitle: title, blogImage: image!, blogContent: content);
         await BlogDbFunc().blogAdd(blogKit);
         Navigator.pop(context);
-         Navigator.pop(context);
+        
       }
     }
   }

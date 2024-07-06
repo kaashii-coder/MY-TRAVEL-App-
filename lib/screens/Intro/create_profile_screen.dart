@@ -1,6 +1,7 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/userdb_functions.dart';
@@ -9,19 +10,19 @@ import 'package:travelapp/screens/Intro/home_pages_main.dart';
 import 'package:travelapp/screens/Intro/login_screen.dart';
 import 'package:travelapp/screens/Intro/terms_condition.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class ProfileCreateScreen extends StatefulWidget {
+  const ProfileCreateScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<ProfileCreateScreen> createState() => _ProfileCreateScreen();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _ProfileCreateScreen extends State<ProfileCreateScreen> {
   final _formKey1 = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   bool ischeckedbox = false;
 
   @override
@@ -30,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
           title: const Center(
         child: Text(
-          'Create Your Account',
+          'Create Your Profile',
           style: TextStyle(color: Color.fromARGB(179, 0, 0, 0)),
         ),
       )),
@@ -92,13 +93,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 15,
                     ),
                     TextFormField(
-                      controller: passwordController,
+                      controller: addressController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.password),
+                          prefixIcon: const Icon(Icons.location_on_outlined),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: 'Password',
+                          labelText: 'Address/city',
                           border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 width: 3,
@@ -106,14 +107,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               borderRadius: BorderRadius.circular(5))),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'please add your password';
-                        } else if (value.length < 8) {
-                          return 'please enter minimum 8 characters';
-                        } else if (!value.contains(RegExp(r'[A-Z]')) ||
-                            !value.contains(RegExp(r'[a-z]'))) {
-                          return 'Password must contain both uppercase and lowercase letters';
+                          return 'give your city/address';
                         }
-                        return null;
+                        // if (value!.isEmpty) {
+                        //   return 'please add your password';
+                        // } else if (value.length < 8) {
+                        //   return 'please enter minimum 8 characters';
+                        // } else if (!value.contains(RegExp(r'[A-Z]')) ||
+                        //     ! value.contains(RegExp(r'[a-z]'))) {
+                        //   return 'Password must contain both uppercase and lowercase letters';
+                        // }
+                        // return null;
                       },
                     ),
                     const SizedBox(
@@ -155,16 +159,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           },
                         ),
-                        const CustomText(text: 'Accept the terms and coditions'),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const TermsAndConditionsPage())));
-                            },
-                            child: const CustomText(text: 'more>'))
+                        const CustomText(
+                            text: 'Accept the terms and coditions'),
+                        // TextButton(
+                        //     onPressed: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: ((context) =>
+                        //                   const TermsAndConditionsPage())));
+                        //     },
+                        //     child: const CustomText(text: 'more>'))
                       ],
                     ),
                     const SizedBox(
@@ -172,30 +177,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     CustomButton(
                         width: double.infinity,
-                        child: const Text('Sign up>>'),
+                        child: const Text(' Create '),
                         onPressed: () {
-                          signupbuttonclick();
+                          createButtonClick();
                         }),
                     const SizedBox(
                       height: 50,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Already signup?',
-                            style: TextStyle(color: Color.fromARGB(232, 0, 0, 0))),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => const LoginScreen())));
-                            },
-                            child: const Text(
-                              'Login',
-                            ))
-                      ],
-                    )
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     const Text('Already signup?',
+                    //         style: TextStyle(color: Color.fromARGB(232, 0, 0, 0))),
+                    //     TextButton(
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: ((context) => const LoginScreen())));
+                    //         },
+                    //         child: const Text(
+                    //           'Login',
+                    //         ))
+                    //   ],
+                    // )
                   ],
                 ),
               ),
@@ -206,26 +211,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  signupbuttonclick() async {
+  createButtonClick() async {
     String name = nameController.toString().trim();
     String email = emailController.toString().trim();
-    String password = passwordController.toString().trim();
+    String address = addressController.toString().trim();
     String age = ageController.toString().trim();
 
     if (name.isNotEmpty &&
         email.isNotEmpty &&
-        password.isNotEmpty &&
+        address.isNotEmpty &&
         age.isNotEmpty) {
       if (_formKey1.currentState!.validate()) {
         if (ischeckedbox == true) {
           final user =
-              Usermodel(name: name, password: password, email: email, age: age);
+              Usermodel(name: name, city: address, email: email, age: age);
           await Userdb().adduser(user).then((value) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: ((context) => const MyHomePage())));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: ((context) =>  MyHomePage())));
           });
+           await setsharedpreference();
         }
       }
     }
+  }
+   Future setsharedpreference() async {
+    final preference = await SharedPreferences.getInstance();
+    preference.setString("My Value", 'true');
   }
 }

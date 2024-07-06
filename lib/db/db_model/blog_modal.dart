@@ -1,6 +1,6 @@
 import 'package:hive_flutter/adapters.dart';
 part 'blog_modal.g.dart';
-@HiveType(typeId: 4)
+@HiveType(typeId: 3)
 class BlogModal extends HiveObject {
  @HiveField(0)
   final String blogTitle;

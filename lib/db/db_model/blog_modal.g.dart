@@ -8,7 +8,7 @@ part of 'blog_modal.dart';
 
 class BlogModalAdapter extends TypeAdapter<BlogModal> {
   @override
-  final int typeId = 4;
+  final int typeId = 3;
 
   @override
   BlogModal read(BinaryReader reader) {

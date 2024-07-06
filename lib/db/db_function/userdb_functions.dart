@@ -10,4 +10,12 @@ class Userdb extends ChangeNotifier {
     await box.add(user);
     await box.close();
   }
+
+  Future getAll() async {
+    final box = await Hive.openBox('userdbbox');
+    usernotifier.value.clear();
+    usernotifier.value.add(box.values as Usermodel);
+    usernotifier.notifyListeners();
+    // box.close();
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
+import 'package:travelapp/screens/Intro/create_profile_screen.dart';
 import 'package:travelapp/screens/Intro/login_screen.dart';
 import 'package:travelapp/screens/onboard/onboard_third.dart';
 
@@ -38,7 +39,7 @@ class SecondOnboardScreen extends StatelessWidget {
               CustomButton(width: 280,
                   child: const Text('Next'),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ThirdOnboardScreen()));
@@ -46,8 +47,8 @@ class SecondOnboardScreen extends StatelessWidget {
               CustomButton(width: 280,color: Colors.white,
                   child: const Text('Skip'),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => const ProfileCreateScreen()));
                   }),
             ],
           ),

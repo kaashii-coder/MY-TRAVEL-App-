@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/blog_function.dart';
+import 'package:travelapp/screens/Creater/add_blog_screen.dart';
 import 'package:travelapp/screens/Creater/blog_edit_page.dart';
 import 'package:travelapp/screens/blogs/single_blog_view.dart';
 
@@ -27,8 +29,10 @@ class _BlogslistState extends State<Blogslist> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(floatingActionButton: FloatingActionButton(onPressed: (){ Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AddBlogpage()));},child:Icon(Icons.add) ,),
       appBar: AppBar(
         title: const CustomText(
           text: 'Blogs',
@@ -68,7 +72,12 @@ class _BlogslistState extends State<Blogslist> {
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5)),
-                                              child: Image.file(
+                                              child: kIsWeb?
+                                              Image.network(
+                                                bloglist[index].blogImage,
+                                                fit: BoxFit.fill,
+                                              ):
+                                              Image.file(
                                                 File(bloglist[index].blogImage),
                                                 fit: BoxFit.fill,
                                               ),
@@ -84,8 +93,38 @@ class _BlogslistState extends State<Blogslist> {
                                                     <PopupMenuEntry<String>>[
                                               PopupMenuItem<String>(
                                                 onTap: () {
-                                                  BlogDbFunc().deleteblog(
-                                                      bloglist[index].key);
+                                                  showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (context) =>
+                                                              AlertDialog(
+                                                                title: CustomText(
+                                                                    text:
+                                                                        'Confirm to delete'),
+                                                                content: CustomText(
+                                                                    text:
+                                                                        'Are you sure ,you wanted to delete this trip'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {},
+                                                                      child: CustomText(
+                                                                          text:
+                                                                              'No')),
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        BlogDbFunc()
+                                                                            .deleteblog(bloglist[index].key);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: CustomText(
+                                                                          text:
+                                                                              'Yes'))
+                                                                ],
+                                                              ));
+                                                  //
                                                 },
                                                 value: 'option1',
                                                 child: Text('Delete'),

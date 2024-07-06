@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 class _SpashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
      getsharedpreference(context);
 
@@ -38,7 +38,7 @@ class _SpashScreenState extends State<SplashScreen> {
           );
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => FirstOnboardScreen(),
+        builder: (context) => const FirstOnboardScreen(),
       ));
     }
   }

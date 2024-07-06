@@ -202,7 +202,7 @@ class _AddTripscrrenState extends State<AddTripscrren> {
             image: image);
         await Tripdb().addData(newtrip).then((value) {
           Navigator.pop(context, true);
-          Navigator.pop(context, true);
+         
         });
       }
     }

@@ -15,13 +15,21 @@ class Tripmodel extends HiveObject {
   @HiveField(4)
   String? image;
   @HiveField(5)
-  TripDetail? tripDetail;
-
+  List<NearbyPlacemodal>? nearbyPlacemodal;
+  @HiveField(6)
+  List<ChecklistModal>? checklistModal;
+  @HiveField(7)
+  List<NotesModal>? notesModal;
+  @HiveField(8)
+  List<PhotosModal>? photosModal;
+  @HiveField(9)
+    List <ExpenceModal>? expenceModal;
   Tripmodel(
       {required this.destination,
       required this.startdate,
       required this.enddate,
       required this.budget,
-      this.tripDetail,
+      this.checklistModal,this.nearbyPlacemodal,this.notesModal,
+      this.expenceModal,this.photosModal,
       this.image});
 }
