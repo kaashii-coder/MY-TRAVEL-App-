@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
 import 'package:travelapp/screens/Intro/create_profile_screen.dart';
-import 'package:travelapp/screens/Intro/login_screen.dart';
 import 'package:travelapp/screens/onboard/onboard_third.dart';
 
 class SecondOnboardScreen extends StatelessWidget {

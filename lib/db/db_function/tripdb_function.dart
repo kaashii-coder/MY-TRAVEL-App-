@@ -32,7 +32,7 @@ class Tripdb extends ChangeNotifier {
   Future addnearbyplaces(Tripmodel trip, int key) async {
     final box = await box1;
     await box.put(key, trip);
-    print('it s working');
+    
     expencenotifier.notifyListeners();
     notesNotifier.notifyListeners();
     checklistNotifier.notifyListeners();
@@ -46,8 +46,11 @@ class Tripdb extends ChangeNotifier {
 
   Future editDetails(Tripmodel value, int key) async {
     final box = await box1;
+    
     var temp = box.get(key);
+    
     temp = value;
     await box.put(key, temp);
+    await getAll();
   }
 }

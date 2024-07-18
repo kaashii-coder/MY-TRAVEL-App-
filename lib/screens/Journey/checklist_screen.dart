@@ -6,7 +6,7 @@ import 'package:travelapp/db/db_model/trip_model.dart';
 
 class JourneyChecklistPage extends StatefulWidget {
   final Tripmodel checklistData;
-  JourneyChecklistPage({super.key, required this.checklistData});
+  const JourneyChecklistPage({super.key, required this.checklistData});
 
   @override
   State<JourneyChecklistPage> createState() => _JourneyChecklistPageState();
@@ -18,19 +18,20 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
   bool ischecked = false;
   late int checklistKey;
   List<Color> colorSelector = [
-    Color.fromARGB(255, 216, 222, 227),
+    const Color.fromARGB(255, 216, 222, 227),
     const Color.fromARGB(255, 145, 177, 204),
     const Color.fromARGB(255, 106, 138, 163),
-    Color.fromARGB(255, 81, 131, 170)
+    const Color.fromARGB(255, 81, 131, 170)
   ];
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     checklistFinalDAta = widget.checklistData;
     checklistKey = checklistFinalDAta.key;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -38,7 +39,14 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
         child: Column(
           children: [
             TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: checklistController,
+              validator: (value) {
+                  if(value!.length>25){
+                                    return 'Item name cannot exceed 25 characters.';
+                                  }
+                  return null;
+              },
               decoration: InputDecoration(
                   labelText: 'Add Checklist',
                   hintText: 'Add items like Tickets, passport',
@@ -63,14 +71,19 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
                               });
                             }
                           },
-                          icon: Icon(Icons.check)))),
-            ),SizedBox(height: 20,),
-            checklistFinalDAta.checklistModal == null
-                ? Column(children: [
-                    // Image.asset('Asset/Image/Add notes-amico.png'),
-                    SizedBox(height: 30,),
-                    Text('No items added yet '),
-                  ])
+                          icon: const Icon(Icons.check)))),
+            ),const SizedBox(height: 20,),
+            checklistFinalDAta.checklistModal == null||checklistFinalDAta.checklistModal!.isEmpty
+                ?  const Expanded(
+                  // width: double.infinity,
+
+                          child: Column(
+                          children: [
+                         //   SizedBox(width: double.infinity,child: Image.asset('Asset/Image/Add notes-amico.png',height: 280,)),
+                            Text('No items added yet'),
+                          ],
+                                                ),
+                        )
                 : Expanded(
                     child: ListView.builder(
                       itemCount: checklistFinalDAta.checklistModal?.length,
@@ -84,10 +97,6 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
                                 value: checklistItem.isChecked,
                                 onChanged: (value) async {
                                   setState(() {
-                                    // ischecked = value!;
-                                    // checklistFinalDAta.checklistModal![index]
-                                    //     .isChecked = value;
-
                                     checklistItem.isChecked = value!;
                                   });
                                   await Tripdb().editDetails(checklistFinalDAta,
@@ -96,49 +105,18 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
                             title: CustomText(
                                 text: checklistFinalDAta
                                     .checklistModal![index].title!),
-                            trailing: Icon(Icons.checklist_rounded),
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      height: 170,
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.only(top: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: const Color.fromARGB(
-                                              255, 255, 255, 255)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20, right: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const SizedBox(
-                                                width: 40,
-                                                child: Divider(
-                                                  color: Colors.black,
-                                                  thickness: 5,
-                                                )),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  showDialog(
+                            trailing:  IconButton(onPressed: (){
+                              showDialog(
                                                       context: context,
                                                       builder:
                                                           (context) =>
                                                               AlertDialog(
-                                                                title: CustomText(
+                                                                title: const CustomText(
                                                                     text:
                                                                         'Confirm to delete'),
-                                                                content: CustomText(
+                                                                content: const CustomText(
                                                                     text:
-                                                                        'Are you sure ,you wanted to delete this trip'),
+                                                                        'Are you sure ,you wanted to delete this item'),
                                                                 actions: [
                                                                   TextButton(
                                                                       onPressed:
@@ -146,7 +124,7 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
                                                                         Navigator.pop(
                                                                             context);
                                                                       },
-                                                                      child: CustomText(
+                                                                      child: const CustomText(
                                                                           text:
                                                                               'No')),
                                                                   TextButton(
@@ -159,38 +137,19 @@ class _JourneyChecklistPageState extends State<JourneyChecklistPage> {
                                                                             checklistFinalDAta,
                                                                             checklistFinalDAta.key);
 
+                                                                        // ignore: use_build_context_synchronously
                                                                         Navigator.pop(
                                                                             context);
                                                                         setState(
                                                                             () {});
                                                                       },
-                                                                      child: CustomText(
+                                                                      child: const CustomText(
                                                                           text:
                                                                               'Yes'))
                                                                 ],
                                                               ));
-                                                },
-                                                child: const CustomText(
-                                                    color: Colors.red,
-                                                    text:
-                                                        'DELETE TRANSACTION')),
-                                            const Divider(
-                                              color: Colors.black,
-                                              thickness: .25,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const CustomText(
-                                                    color: Colors.black,
-                                                    text: 'CANCEL'))
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                            },
+                            }, icon: Icon(Icons.delete_rounded)),
+                            
                           ),
                         );
                       },

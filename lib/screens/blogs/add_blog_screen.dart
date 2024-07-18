@@ -30,7 +30,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
         actions: [
           TextButton(
               onPressed: () => blogsave(),
-              child: CustomText(
+              child: const CustomText(
                 text: 'save',
                 color: Colors.black,
               ))
@@ -46,7 +46,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
                 TextFormField(
                   controller: blogTitle,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       labelText: 'Title', hintText: '--give a title--'),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -55,7 +55,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
@@ -87,9 +87,9 @@ class _AddBlogpageState extends State<AddBlogpage> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : SizedBox())), //!RETURNING SIZEDBOX
+                            : const Icon(Icons.add_photo_alternate, size: 60),)), //!RETURNING SIZEDBOX
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 
@@ -99,9 +99,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
                   // focusNode: _focusNode,
                   maxLines:50,
                       // _isFocused ? 5 : 1, // Increase maxLines when focused
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter text',
+                   // labelText: 'Enter text',
+                    hintText: 'Enter your text'
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -129,12 +130,13 @@ class _AddBlogpageState extends State<AddBlogpage> {
     var title = blogTitle.text.trim();
     var content = blogContent.text.trim();
     var image = imageObj?.path.toString();
-    print(image);
+    
     if (title.isNotEmpty && content.isNotEmpty) {
       if (blogformkey.currentState!.validate()) {
         final blogKit = BlogModal(
             blogTitle: title, blogImage: image!, blogContent: content);
         await BlogDbFunc().blogAdd(blogKit);
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
         
       }

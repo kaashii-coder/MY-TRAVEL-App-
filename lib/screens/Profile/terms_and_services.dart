@@ -5,10 +5,10 @@ class TermsAndServices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(
+    return const Scaffold(body: SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(15.0),
           child: Column(children: [Text(''' Welcome to "Destinozz". By using our mobile application, you agree to these Terms and Service. Please read them carefully.
           
 ------ 1. Acceptance of Terms------

@@ -32,6 +32,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     // bool _isFocused = false;
     return Scaffold(
@@ -41,7 +42,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
         actions: [
           TextButton(
               onPressed: () => blogUpdate(objEditBlog.key),
-              child: CustomText(
+              child: const CustomText(
                 text: 'Update',
                 color: Colors.black,
               ))
@@ -57,7 +58,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
                 TextFormField(
                   controller: editBlogTitle,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       labelText: 'Title', hintText: '--give a title--'),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -66,7 +67,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
@@ -78,6 +79,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
                             border: Border.all(),
                             // color: Colors.blueGrey,
                             borderRadius: BorderRadius.circular(10)),
+                        // ignore: unnecessary_null_comparison
                         child: editimage != null
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(9.5),
@@ -88,9 +90,9 @@ class _EditBlogpageState extends State<EditBlogpage> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : SizedBox())), //!RETURNING SIZEDBOX
+                            : const SizedBox())), //!RETURNING SIZEDBOX
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 
@@ -100,7 +102,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
                   // focusNode: _focusNode,
                   maxLines: 100,
                   // _isFocused ? 5 : 1, // Increase maxLines when focused
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter text',
                   ),
@@ -129,7 +131,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
   blogUpdate(key) async {
     var title = editBlogTitle.text.trim();
     var content = editBlogContent.text.trim();
-    var image = editimage.path ??'';
+    var image = editimage.path;
     if (title.isNotEmpty && content.isNotEmpty&&image.isNotEmpty) {
       if (editBlogformkey.currentState!.validate()) {
         final blogKit = BlogModal(
@@ -139,6 +141,7 @@ class _EditBlogpageState extends State<EditBlogpage> {
           
         });
        
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
         
       }

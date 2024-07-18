@@ -8,7 +8,7 @@ import 'package:travelapp/db/db_model/trip_model.dart';
 
 class JourneynotesPage extends StatefulWidget {
   final Tripmodel data;
-  JourneynotesPage({super.key, required this.data});
+  const JourneynotesPage({super.key, required this.data});
 
   @override
   State<JourneynotesPage> createState() => _JourneynotesPageState();
@@ -21,11 +21,11 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
   final GlobalKey<FormState> noteFormKey = GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     notesDatas = widget.data;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -58,7 +58,6 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
                             key: noteFormKey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              
                               children: [
                                 //!
                                 Container(
@@ -66,10 +65,11 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
                                   height: 6.0,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(2.5),
-                                    color: Color.fromARGB(255, 202, 202, 202),
+                                    color: const Color.fromARGB(
+                                        255, 202, 202, 202),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 const CustomText(
@@ -93,16 +93,16 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
                                           color: Colors.grey.withOpacity(0.5),
                                         ),
                                       ),
-                                      suffixIconColor:
-                                          Color.fromARGB(255, 121, 120, 120),
+                                      suffixIconColor: const Color.fromARGB(
+                                          255, 121, 120, 120),
                                       suffixIcon: IconButton(
                                           onPressed: () {
                                             noteHead.clear();
                                           },
-                                          icon:
-                                              Icon(Icons.restart_alt_rounded)),
+                                          icon: const Icon(
+                                              Icons.restart_alt_rounded)),
                                       labelText: 'Title',
-                                      labelStyle: TextStyle(
+                                      labelStyle: const TextStyle(
                                           color: Color.fromARGB(
                                               255, 121, 120, 120))),
                                   validator: (value) {
@@ -123,17 +123,17 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
                                           color: Colors.grey.withOpacity(0.5),
                                         ),
                                       ),
-                                      suffixIconColor:
-                                          Color.fromARGB(255, 121, 120, 120),
+                                      suffixIconColor: const Color.fromARGB(
+                                          255, 121, 120, 120),
                                       hintText: ' type... description',
                                       suffixIcon: IconButton(
                                           onPressed: () {
                                             noteDesctription.clear();
                                           },
-                                          icon:
-                                              Icon(Icons.restart_alt_rounded)),
+                                          icon: const Icon(
+                                              Icons.restart_alt_rounded)),
                                       labelText: 'Description',
-                                      labelStyle: TextStyle(
+                                      labelStyle: const TextStyle(
                                           color: Color.fromARGB(
                                               255, 121, 120, 120))),
                                   validator: (value) {
@@ -161,16 +161,14 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
                                     ),
                                     onPressed: () {
                                       notesAddButtonclicked(notesDatas.key);
-                                      
                                     }),
                                 TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: CustomText(
+                                    child: const CustomText(
                                       text: 'Cancel',
-                                      color: const Color.fromARGB(
-                                          255, 101, 100, 100),
+                                      color: Color.fromARGB(255, 101, 100, 100),
                                     ))
                               ],
                             ),
@@ -183,17 +181,36 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
           },
           child: const Icon(Icons.add),
         ),
-        body: Column(
+        body:notesDatas.notesModal == null||notesDatas.notesModal!.isEmpty
+         ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Image.asset('Asset/Image/Add notes-amico.png'),
+                      const Text('No notes added yet'),
+                    ],
+                  ),
+                ):
+        
+         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: notesDatas.notesModal?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return CustomCard(colorIndex: index, data: notesDatas);
-                },
-              ),
-            )
+            // ignore: unnecessary_null_comparison
+            
+               
+                 Expanded(
+                    child: ListView.builder(
+                      itemCount: notesDatas.notesModal?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return CustomCard(
+                          colorIndex: index,
+                          data: notesDatas,
+                          fn: () {
+                            setState(() {});
+                          },
+                        );
+                      },
+                    ),
+                  )
           ],
         ));
   }
@@ -210,6 +227,7 @@ class _JourneynotesPageState extends State<JourneynotesPage> {
             : notesDatas.notesModal!.add(notesCarrier);
         await Tripdb().addnearbyplaces(notesDatas, key);
 
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
         setState(() {
           noteHead.clear();

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
@@ -7,6 +5,7 @@ import 'package:travelapp/db/db_function/tripdb_function.dart';
 import 'package:travelapp/db/db_model/atripdetail_modal.dart';
 import 'package:travelapp/db/db_model/trip_model.dart';
 
+// ignore: must_be_immutable
 class NearbyPlaceaddPage extends StatefulWidget {
   Tripmodel placeobj;
   NearbyPlaceaddPage({
@@ -27,7 +26,6 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
   int _index = 0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     placeobj1 = widget.placeobj;
   }
@@ -143,9 +141,8 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                 controller: placename,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                                
                                 decoration: InputDecoration(
-                                  hintText: 'Type.. place name',
+                                    hintText: 'Type.. place name',
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.grey.withOpacity(0.5),
@@ -166,7 +163,10 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'please add place name';
-                                  } else {
+                                  } else if(value.length>18){
+                                    return 'name cannot exceed 18 characters.';
+                                  }
+                                   else {
                                     return null;
                                   }
                                 },
@@ -176,7 +176,6 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
-                                  
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.grey.withOpacity(0.5),
@@ -202,9 +201,10 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                   } else if (value.trim() ==
                                       value.replaceAll(RegExp(r'[^\d]'), '')) {
                                     return 'Description should not only contain numbers.';
-                                  } else {
-                                    return null;
+                                  } else if(value.length>25){
+                                    return 'Description cannot exceed 25 characters.';
                                   }
+                                  return null;
                                 },
                               ),
                               const SizedBox(
@@ -237,16 +237,25 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                 );
               }).then((value) {
             setState(() {});
-             
-                 placedescription.clear();
-              placename.clear();
-              
+
+            placedescription.clear();
+            placename.clear();
           });
         },
         child: const Icon(Icons.add),
       ),
       body: steps.isEmpty
-          ? const Center(child: CustomText(text: 'No places added yet.'))
+          ? SizedBox(
+              width: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Image.asset('Asset/Image/Add notes-amico.png'),
+                    const Text('No places added yet'),
+                  ],
+                ),
+              ),
+            )
           : SingleChildScrollView(
               child: Column(
                 children: [
@@ -265,6 +274,9 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                         setState(() {
                           _index += 1;
                         });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Your place is completed')));
                       }
                     },
                     onStepTapped: (int index) {
@@ -293,6 +305,7 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
             : placeobj1.nearbyPlacemodal!.add(newplace);
 
         await Tripdb().addnearbyplaces(placeobj1, key);
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
     }

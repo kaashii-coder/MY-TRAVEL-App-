@@ -4,7 +4,9 @@ import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/tripdb_function.dart';
 import 'package:travelapp/db/db_model/atripdetail_modal.dart';
 import 'package:travelapp/db/db_model/trip_model.dart';
+import 'package:travelapp/screens/Creater/trip_edit_page.dart';
 
+// ignore: must_be_immutable
 class ExpenceListPage extends StatefulWidget {
   Tripmodel expenceobj;
 
@@ -19,18 +21,19 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
   final GlobalKey<FormState> expformkey = GlobalKey<FormState>();
   final TextEditingController costController = TextEditingController();
   final TextEditingController costTitleController = TextEditingController();
+
   late Tripmodel tripexpobj;
   double percentage = 0;
   int sum = 0;
   List<Color> colorSelector = [
-    Color.fromARGB(255, 216, 222, 227),
+    const Color.fromARGB(255, 216, 222, 227),
     const Color.fromARGB(255, 145, 177, 204),
     const Color.fromARGB(255, 106, 138, 163),
-    Color.fromARGB(255, 81, 131, 170)
+    const Color.fromARGB(255, 81, 131, 170)
   ];
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     tripexpobj = widget.expenceobj;
 
@@ -38,6 +41,7 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
     percetageFinder();
   }
 
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -55,7 +59,7 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
+                        const CustomText(
                           text: 'Your planned budget is :',
                           size: 13,
                           fontweight: FontWeight.w500,
@@ -65,13 +69,13 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                           text: "(₹)${tripexpobj.budget}",
                           size: 20,
                           fontweight: FontWeight.w900,
-                          color: Color.fromARGB(255, 0, 140, 255),
+                          color: const Color.fromARGB(255, 0, 140, 255),
                         ),
                         CustomText(
                           text: "you spends:$sum",
                           size: 13,
                           fontweight: FontWeight.w500,
-                          color: Color.fromARGB(255, 161, 162, 163),
+                          color: const Color.fromARGB(255, 161, 162, 163),
                         ),
                       ],
                     ),
@@ -93,10 +97,35 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                             child: LinearProgressIndicator(
                               value: percentage,
                             )),
+                        sum >= tripexpobj.budget
+                            ? SizedBox(
+                                child: Row(
+                                children: [
+                                  const CustomText(
+                                    text:
+                                        'Your planned budget reached - reset budget',
+                                    color: Colors.red,
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditTripscrren(
+                                                        editTrip: tripexpobj)));
+                                      },
+                                      child: const CustomText(
+                                        text: '>>click here<<',
+                                        color: Colors.black,
+                                      ))
+                                ],
+                              ))
+                            : const SizedBox(),
                         // CustomText(text: 'Total spend:sum'),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        // SizedBox(
+                        //   height: 15,
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -114,7 +143,6 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                   .bottom),
                                           child: SingleChildScrollView(
                                             child: Container(
-                                              //!
                                               height: 360,
                                               width: double.infinity,
                                               padding: const EdgeInsets.only(
@@ -135,7 +163,6 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                   left: 20,
                                                 ),
                                                 child: Form(
-                                                  //!
                                                   key: expformkey,
                                                   child: Column(
                                                     crossAxisAlignment:
@@ -144,7 +171,6 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                     // mainAxisSize:
                                                     //     MainAxisSize.min,
                                                     children: [
-                                                      //!
                                                       Container(
                                                         width: 40,
                                                         height: 6.0,
@@ -154,21 +180,21 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                               BorderRadius
                                                                   .circular(
                                                                       2.5),
-                                                          color: Color.fromARGB(
+                                                          color: const Color.fromARGB(
                                                               255,
                                                               202,
                                                               202,
                                                               202),
                                                         ),
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 10,
                                                       ),
                                                       const CustomText(
                                                         text:
                                                             'Record your expence',
                                                         size: 20,
-                                                        color: Colors.black, //!
+                                                        color: Colors.black,
                                                         fontweight:
                                                             FontWeight.bold,
                                                       ),
@@ -197,7 +223,7 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                                   ),
                                                                 ),
                                                                 suffixIconColor:
-                                                                    Color.fromARGB(
+                                                                    const Color.fromARGB(
                                                                         255,
                                                                         121,
                                                                         120,
@@ -209,11 +235,11 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                                           costController
                                                                               .clear();
                                                                         },
-                                                                        icon: Icon(Icons
+                                                                        icon: const Icon(Icons
                                                                             .restart_alt_rounded)),
                                                                 labelText:
                                                                     'Expence/cost',
-                                                                labelStyle: TextStyle(
+                                                                labelStyle: const TextStyle(
                                                                     color: Color
                                                                         .fromARGB(
                                                                             255,
@@ -248,7 +274,7 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                                   ),
                                                                 ),
                                                                 suffixIconColor:
-                                                                    Color.fromARGB(
+                                                                    const Color.fromARGB(
                                                                         255,
                                                                         121,
                                                                         120,
@@ -262,11 +288,11 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                                           costTitleController
                                                                               .clear();
                                                                         },
-                                                                        icon: Icon(Icons
+                                                                        icon: const Icon(Icons
                                                                             .restart_alt_rounded)),
                                                                 labelText:
                                                                     'Description',
-                                                                labelStyle: TextStyle(
+                                                                labelStyle: const TextStyle(
                                                                     color: Color
                                                                         .fromARGB(
                                                                             255,
@@ -311,9 +337,9 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: CustomText(
+                                                          child: const CustomText(
                                                             text: 'Cancel',
-                                                            color: const Color
+                                                            color: Color
                                                                 .fromARGB(255,
                                                                 101, 100, 100),
                                                           ))
@@ -336,16 +362,24 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           tripexpobj.expenceModal == null
-              ? const Text('No Expences record yet')
+              ? SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Image.asset('Asset/Image/Add notes-amico.png'),
+                      const Text('No expences added yet'),
+                    ],
+                  ),
+                )
               : ValueListenableBuilder(
                   valueListenable: expencenotifier,
                   builder: (BuildContext context, list, _) {
-                    print(list.length);
-                    print(tripexpobj.expenceModal?.length);
+                    // print(list.length);
+                    // print(tripexpobj.expenceModal?.length);
 
                     return ListView.builder(
                         shrinkWrap: true,
@@ -363,7 +397,7 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                   title: Text(tripexpobj
                                       .expenceModal![index].expenceTitle!),
                                   subtitle: Text(
-                                      tripexpobj.expenceModal![index].cost!),
+                                      'Rs.${tripexpobj.expenceModal![index].cost}'),
                                   trailing: PopupMenuButton<String>(
                                     onSelected: (String value) {},
                                     itemBuilder: (BuildContext context) =>
@@ -397,6 +431,7 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                                                     tripexpobj
                                                                         .key);
 
+                                                            // ignore: use_build_context_synchronously
                                                             Navigator.pop(
                                                                 context);
                                                             await totalExpencrCalculator(
@@ -413,9 +448,235 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
                                         value: 'option1',
                                         child: const Text('Delete'),
                                       ),
-                                      const PopupMenuItem<String>(
+                                      PopupMenuItem<String>(
+                                        onTap: () {
+                                          costController.text = tripexpobj
+                                              .expenceModal![index].cost!;
+                                          costTitleController.text = tripexpobj
+                                              .expenceModal![index]
+                                              .expenceTitle!;
+                                          showModalBottomSheet(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              builder: (BuildContext context) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom:
+                                                          MediaQuery.of(context)
+                                                              .viewInsets
+                                                              .bottom),
+                                                  child: SingleChildScrollView(
+                                                    child: Container(
+                                                      //!
+                                                      height: 360,
+                                                      width: double.infinity,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 20),
+                                                      decoration: const BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          30)),
+                                                          color: Colors.white),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          right: 20,
+                                                          left: 20,
+                                                        ),
+                                                        child: Form(
+                                                          //!
+                                                          key: expformkey,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            // mainAxisSize:
+                                                            //     MainAxisSize.min,
+                                                            children: [
+                                                              //!
+                                                              Container(
+                                                                width: 40,
+                                                                height: 6.0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              2.5),
+                                                                  color: const Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          202,
+                                                                          202,
+                                                                          202),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              const CustomText(
+                                                                text:
+                                                                    'Record your expence',
+                                                                size: 20,
+                                                                color: Colors
+                                                                    .black, //!
+                                                                fontweight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    costController,
+                                                                autovalidateMode:
+                                                                    AutovalidateMode
+                                                                        .onUserInteraction,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                        enabledBorder:
+                                                                            UnderlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                Colors.grey.withOpacity(0.5),
+                                                                          ),
+                                                                        ),
+                                                                        suffixIconColor: const Color.fromARGB(
+                                                                            255,
+                                                                            121,
+                                                                            120,
+                                                                            120),
+                                                                        suffixIcon: IconButton(
+                                                                            onPressed: () {
+                                                                              costController.clear();
+                                                                            },
+                                                                            icon: const Icon(Icons.restart_alt_rounded)),
+                                                                        labelText: 'Expence/cost',
+                                                                        labelStyle: const TextStyle(color: Color.fromARGB(255, 121, 120, 120))),
+                                                                validator:
+                                                                    (value) {
+                                                                  if (value ==
+                                                                          null ||
+                                                                      value
+                                                                          .isEmpty) {
+                                                                    return 'please add your amount';
+                                                                  } else {
+                                                                    return null;
+                                                                  }
+                                                                },
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    costTitleController,
+                                                                autovalidateMode:
+                                                                    AutovalidateMode
+                                                                        .onUserInteraction,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                        enabledBorder:
+                                                                            UnderlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                Colors.grey.withOpacity(0.5),
+                                                                          ),
+                                                                        ),
+                                                                        suffixIconColor: const Color.fromARGB(
+                                                                            255,
+                                                                            121,
+                                                                            120,
+                                                                            120),
+                                                                        hintText:
+                                                                            ' Type... description',
+                                                                        suffixIcon: IconButton(
+                                                                            onPressed: () {
+                                                                              costTitleController.clear();
+                                                                            },
+                                                                            icon: const Icon(Icons.restart_alt_rounded)),
+                                                                        labelText: 'Description',
+                                                                        labelStyle: const TextStyle(color: Color.fromARGB(255, 121, 120, 120))),
+                                                                validator:
+                                                                    (value) {
+                                                                  //!
+                                                                  if (value ==
+                                                                          null ||
+                                                                      value
+                                                                          .isEmpty) {
+                                                                    return 'please add your description';
+                                                                  } else if (value
+                                                                          .trim() ==
+                                                                      value.replaceAll(
+                                                                          RegExp(
+                                                                              r'[^\d]'),
+                                                                          '')) {
+                                                                    return 'Description should not only contain numbers.';
+                                                                  } else {
+                                                                    return null;
+                                                                  }
+                                                                },
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              CustomButton(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  child:
+                                                                      const CustomText(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    text:
+                                                                        'Save',
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    expenceUpdate(
+                                                                        tripexpobj
+                                                                            .key,
+                                                                        index);
+                                                                  }),
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child:
+                                                                      const CustomText(
+                                                                    text:
+                                                                        'Cancel',
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                        255,
+                                                                        101,
+                                                                        100,
+                                                                        100),
+                                                                  ))
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        },
                                         value: 'option2',
-                                        child: Text('Edit'),
+                                        child: const Text('Edit'),
                                       ),
                                     ],
                                   ),
@@ -441,6 +702,28 @@ class _ExpenceListPageState extends State<ExpenceListPage> {
         Tripdb().addnearbyplaces(tripexpobj, key);
         await totalExpencrCalculator(tripexpobj);
         await percetageFinder();
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+        setState(() {
+          costController.clear();
+          costTitleController.clear();
+        });
+      }
+    }
+  }
+
+  expenceUpdate(dynamic key, int index) async {
+    String costTitle = costTitleController.text.trim();
+    String costAmount = costController.text.trim();
+    if (expformkey.currentState!.validate()) {
+      if (costTitle.isNotEmpty && costAmount.isNotEmpty) {
+        tripexpobj.expenceModal![index].expenceTitle = costTitle;
+        tripexpobj.expenceModal![index].cost = costAmount;
+
+        await Tripdb().editDetails(tripexpobj, key);
+        await totalExpencrCalculator(tripexpobj);
+        await percetageFinder();
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
         setState(() {
           costController.clear();

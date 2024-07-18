@@ -18,11 +18,13 @@ class _SpashScreenState extends State<SplashScreen> {
      getsharedpreference(context);
 
   }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Padding(
-      padding: const EdgeInsets.all(80.0),
+    return Scaffold(backgroundColor: Colors.white,
+      body: Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Image.asset('Asset/Image/checklist.gif')],),
+        children: [ //SizedBox(height: 300,),
+          SizedBox(height: 200,width: 200, child: Image.asset('Asset/Image/checklist.gif'))],),
     ),);
   }
   Future getsharedpreference(BuildContext context) async {
@@ -30,6 +32,7 @@ class _SpashScreenState extends State<SplashScreen> {
     final value = preference.getString('My Value');
     await Future.delayed(const Duration(seconds: 3));
     if (value == 'true') {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -37,6 +40,7 @@ class _SpashScreenState extends State<SplashScreen> {
           ),
           );
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => const FirstOnboardScreen(),
       ));

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:travelapp/custom_widgests/custom_buttons.dart';
@@ -7,6 +6,7 @@ import 'package:travelapp/db/db_function/tripdb_function.dart';
 import 'package:travelapp/db/db_model/atripdetail_modal.dart';
 import 'package:travelapp/db/db_model/trip_model.dart';
 
+// ignore: must_be_immutable
 class NearbyPlaceaddPage extends StatefulWidget {
   Tripmodel placeobj;
   NearbyPlaceaddPage({
@@ -27,7 +27,7 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
   int _index = 0;
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     placeobj1 = widget.placeobj;
   }
@@ -67,6 +67,7 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                       await Tripdb().editDetails(
                                           placeobj1, placeobj1.key);
 
+                                      // ignore: use_build_context_synchronously
                                       Navigator.pop(context);
                                       setState(() {});
                                     },
@@ -228,6 +229,7 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
             : placeobj1.nearbyPlacemodal!.add(newplace);
 
         await Tripdb().addnearbyplaces(placeobj1, key);
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
     }

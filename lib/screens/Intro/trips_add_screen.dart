@@ -28,7 +28,7 @@ class _AddTripscrrenState extends State<AddTripscrren> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color.fromARGB(255, 10, 60, 92),
+      
       appBar: AppBar(
         title: const Text('Add your trips'),
       ),
@@ -56,12 +56,12 @@ class _AddTripscrrenState extends State<AddTripscrren> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: _image != null
-                          ? kIsWeb // Check if the platform is web
+                          ? kIsWeb 
                               ? Image.network(
-                                  _image!.path) // Use Image.network for web
+                                  _image!.path) 
                               : Image.file(File(_image!.path),
                                   fit: BoxFit
-                                      .cover) // Use Image.file for other platforms
+                                      .cover) 
                           : const Icon(Icons.add_photo_alternate, size: 60),
                     ),
                   ),

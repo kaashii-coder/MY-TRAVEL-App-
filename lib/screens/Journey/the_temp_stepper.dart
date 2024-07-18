@@ -198,6 +198,7 @@ class _NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
             : placeobj1.nearbyPlacemodal!.add(newplace);
 
         await Tripdb().addnearbyplaces(placeobj1, key);
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
     }

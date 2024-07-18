@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:travelapp/screens/blogs/blogs_list.dart';
-import 'package:travelapp/screens/Creater/creater_screen_main.dart';
-import 'package:travelapp/screens/Intro/home_screen.dart';
 import 'package:travelapp/screens/Journey/all_journeys_screen.dart';
 import 'package:travelapp/screens/Profile/profile_screen.dart';
 
@@ -17,10 +15,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List _pages = [
  //   const HomeScreen(),
-     MyJourneyScreen(),
+     const MyJourneyScreen(),
     // const CreaterScreen(),
-     Blogslist(),
-     ProfileScreen(),
+     const Blogslist(),
+     const ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {

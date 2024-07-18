@@ -7,8 +7,6 @@ import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/userdb_functions.dart';
 import 'package:travelapp/db/db_model/user_model.dart';
 import 'package:travelapp/screens/Intro/home_pages_main.dart';
-import 'package:travelapp/screens/Intro/login_screen.dart';
-import 'package:travelapp/screens/Intro/terms_condition.dart';
 
 class ProfileCreateScreen extends StatefulWidget {
   const ProfileCreateScreen({super.key});
@@ -109,6 +107,7 @@ class _ProfileCreateScreen extends State<ProfileCreateScreen> {
                         if (value!.isEmpty) {
                           return 'give your city/address';
                         }
+                        return null;
                         // if (value!.isEmpty) {
                         //   return 'please add your password';
                         // } else if (value.length < 8) {
@@ -227,7 +226,7 @@ class _ProfileCreateScreen extends State<ProfileCreateScreen> {
               Usermodel(name: name, city: address, email: email, age: age);
           await Userdb().adduser(user).then((value) {
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: ((context) =>  MyHomePage())));
+                MaterialPageRoute(builder: ((context) =>  const MyHomePage())));
           });
            await setsharedpreference();
         }

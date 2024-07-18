@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/blog_function.dart';
-import 'package:travelapp/screens/Creater/add_blog_screen.dart';
+import 'package:travelapp/screens/blogs/add_blog_screen.dart';
 import 'package:travelapp/screens/Creater/blog_edit_page.dart';
 import 'package:travelapp/screens/blogs/single_blog_view.dart';
 
 class Blogslist extends StatefulWidget {
   // BlogModal? bloglistobj;
-  Blogslist({
+  const Blogslist({
     super.key,
   });
 
@@ -23,7 +23,7 @@ class _BlogslistState extends State<Blogslist> {
   // late BlogModal objblog;
   @override
   void initState() {
-    // TODO: implement initState
+    
     BlogDbFunc().allblog();
     // objblog = widget.bloglistobj;
     super.initState();
@@ -32,7 +32,7 @@ class _BlogslistState extends State<Blogslist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(floatingActionButton: FloatingActionButton(onPressed: (){ Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AddBlogpage()));},child:Icon(Icons.add) ,),
+                  MaterialPageRoute(builder: (context) => const AddBlogpage()));},child:const Icon(Icons.add) ,),
       appBar: AppBar(
         title: const CustomText(
           text: 'Blogs',
@@ -70,7 +70,7 @@ class _BlogslistState extends State<Blogslist> {
                                             width: double.infinity,
                                             height: 200,
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.all(
+                                              borderRadius: const BorderRadius.all(
                                                   Radius.circular(5)),
                                               child: kIsWeb?
                                               Image.network(
@@ -98,17 +98,17 @@ class _BlogslistState extends State<Blogslist> {
                                                       builder:
                                                           (context) =>
                                                               AlertDialog(
-                                                                title: CustomText(
+                                                                title: const CustomText(
                                                                     text:
                                                                         'Confirm to delete'),
-                                                                content: CustomText(
+                                                                content: const CustomText(
                                                                     text:
                                                                         'Are you sure ,you wanted to delete this trip'),
                                                                 actions: [
                                                                   TextButton(
                                                                       onPressed:
                                                                           () {},
-                                                                      child: CustomText(
+                                                                      child: const CustomText(
                                                                           text:
                                                                               'No')),
                                                                   TextButton(
@@ -119,7 +119,7 @@ class _BlogslistState extends State<Blogslist> {
                                                                         Navigator.pop(
                                                                             context);
                                                                       },
-                                                                      child: CustomText(
+                                                                      child: const CustomText(
                                                                           text:
                                                                               'Yes'))
                                                                 ],
@@ -127,7 +127,7 @@ class _BlogslistState extends State<Blogslist> {
                                                   //
                                                 },
                                                 value: 'option1',
-                                                child: Text('Delete'),
+                                                child: const Text('Delete'),
                                               ),
                                               PopupMenuItem<String>(
                                                 onTap: () {
@@ -140,7 +140,7 @@ class _BlogslistState extends State<Blogslist> {
                                                                           index])));
                                                 },
                                                 value: 'option2',
-                                                child: Text('Edit'),
+                                                child: const Text('Edit'),
                                               ),
                                             ],
                                           ),
@@ -155,7 +155,7 @@ class _BlogslistState extends State<Blogslist> {
                     : Column(
                         children: [
                           Image.asset('Asset/Image/Add notes-amico.png'),
-                          Text('No Data Found'),
+                          const Text('No Data Found'),
                         ],
                       );
               }),

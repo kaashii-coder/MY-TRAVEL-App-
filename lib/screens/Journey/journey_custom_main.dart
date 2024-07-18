@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:travelapp/custom_widgests/custom_buttons.dart';
 import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_model/trip_model.dart';
 import 'package:travelapp/screens/Journey/checklist_screen.dart';
@@ -72,7 +71,7 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
                       children: [
                         Row(
                           children: [
-                            CustomText(
+                            const CustomText(
                               text: 'Trip to ',
                               size: 20,
                             ),
@@ -93,7 +92,7 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
                                   text: DateFormat(' dd/MM/yyyy ')
                                       .format(onetrip.startdate)),
                             ),
-                            CustomText(text: 'To'),
+                            const CustomText(text: 'To'),
                             CustomText(
                                 text: DateFormat(' dd/MM/yyyy ')
                                     .format(onetrip.enddate)),
@@ -109,10 +108,10 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
                         // const SizedBox(
                         //   height: 10,
                         // ),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.person_pin,
                               size: 45,
                             ),
@@ -154,7 +153,7 @@ class _JourneyCustomMain extends State<JourneyCustomMain> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.note_alt_sharp,
+              Icons.note_alt_outlined,
               size: 35,
             ),
             label: 'Notes',

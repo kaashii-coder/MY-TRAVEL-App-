@@ -4,7 +4,6 @@ import 'package:travelapp/custom_widgests/custom_text.dart';
 import 'package:travelapp/db/db_function/blog_function.dart';
 import 'package:travelapp/db/db_function/tripdb_function.dart';
 import 'package:travelapp/db/db_function/userdb_functions.dart';
-import 'package:travelapp/db/db_model/user_model.dart';
 import 'package:travelapp/screens/Profile/contact_details.dart';
 import 'package:travelapp/screens/Profile/privacy_policy.dart';
 import 'package:travelapp/screens/Profile/terms_and_services.dart';
@@ -69,12 +68,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         width: 30,
                       ),
-                       Column(
+                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children:  [
                               Text('User'),
                               SizedBox(
                                 width: 130,
@@ -103,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Card(
                   child: SizedBox(
-                height: 169,
+                height: 129,
                 width: 150,
                 child: Column(
                   children: [
@@ -120,11 +119,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       trailing: Text(blogNotifier.value.length.toString(),
                           style: const TextStyle(fontSize: 13)),
                     ),
-                    const ListTile(
-                      leading:
-                          Text('My spends', style: TextStyle(fontSize: 13)),
-                      trailing: Text('0', style: TextStyle(fontSize: 13)),
-                    ),
+                    // const ListTile(
+                    //   leading:
+                    //       Text('My spends', style: TextStyle(fontSize: 13)),
+                    //   trailing: Text('0', style: TextStyle(fontSize: 13)),
+                    // ),
                   ],
                 ),
               )),
@@ -140,15 +139,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const Card(
-                child: ListTile(
-                  leading: Icon(
-                    Icons.settings_outlined,
-                  ),
-                  title: CustomText(text: 'Settings'),
-                  trailing: Icon(Icons.arrow_forward_ios_outlined),
-                ),
-              ),
+              // const Card(
+              //   child: ListTile(
+              //     leading: Icon(
+              //       Icons.settings_outlined,
+              //     ),
+              //     title: CustomText(text: 'Settings'),
+              //     trailing: Icon(Icons.arrow_forward_ios_outlined,size: 17,),
+              //   ),
+              // ),
               Card(
                 child: ListTile(
                   onTap: () {
@@ -161,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icons.headset_mic_rounded,
                   ),
                   title: const CustomText(text: 'Contact Support'),
-                  trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined,size: 17),
                 ),
               ),
               Card(
@@ -174,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   leading: const Icon(Icons.lock_outline_rounded),
                   title: const CustomText(text: 'Privacy Plolicy'),
-                  trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined,size: 17),
                 ),
               ),
               Card(
@@ -189,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icons.library_books,
                   ),
                   title: const CustomText(text: 'Terms Of service'),
-                  trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined,size: 17),
                 ),
               ),
               const Card(
@@ -198,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icons.star_border_purple500_outlined,
                   ),
                   title: CustomText(text: 'Rate Us'),
-                  trailing: Icon(Icons.arrow_forward_ios_outlined),
+                  trailing: Icon(Icons.arrow_forward_ios_outlined,size: 17),
                 ),
               ),
               const SizedBox(
@@ -220,10 +219,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Future<void> uploadImage() async {
-  //   var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     _image = pickedFile;
-  //   });
-  // }
+   
 }
