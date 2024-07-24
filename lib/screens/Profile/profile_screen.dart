@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.blue,
         title: const CustomText(
           text: 'Profile',
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       body: SingleChildScrollView(
@@ -191,15 +191,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   trailing: const Icon(Icons.arrow_forward_ios_outlined,size: 17),
                 ),
               ),
-              const Card(
-                child: ListTile(
-                  leading: Icon(
-                    Icons.star_border_purple500_outlined,
-                  ),
-                  title: CustomText(text: 'Rate Us'),
-                  trailing: Icon(Icons.arrow_forward_ios_outlined,size: 17),
-                ),
-              ),
+              // const Card(
+              //   child: ListTile(
+              //     leading: Icon(
+              //       Icons.star_border_purple500_outlined,
+              //     ),
+              //     title: CustomText(text: 'Rate Us'),
+              //     trailing: Icon(Icons.arrow_forward_ios_outlined,size: 17),
+              //   ),
+              // ),
               const SizedBox(
                 height: 15,
               ),

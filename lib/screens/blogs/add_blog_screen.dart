@@ -25,14 +25,14 @@ class _AddBlogpageState extends State<AddBlogpage> {
    // bool _isFocused = false;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add new blogs'),
+        title: const CustomText(text:'Add new blogs',color: Colors.white,),
         backgroundColor: Colors.blue,
         actions: [
           TextButton(
               onPressed: () => blogsave(),
               child: const CustomText(
                 text: 'save',
-                color: Colors.black,
+                color: Colors.white,
               ))
         ],
       ),

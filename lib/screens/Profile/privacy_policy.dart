@@ -40,7 +40,7 @@ You can review, update, export, or delete your personal information through the 
           
 -----5. Children’s Privacy-----
           
-Our app is not intended for children under 13, and we do not knowingly collect data from them.
+Our app is for every person, and we do not knowingly collect data from them.
           
 -----6. Contact Us-----
           

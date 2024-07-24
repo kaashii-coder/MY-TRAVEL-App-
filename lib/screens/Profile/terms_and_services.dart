@@ -9,7 +9,7 @@ class TermsAndServices extends StatelessWidget {
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(15.0),
-          child: Column(children: [Text(''' Welcome to "Destinozz". By using our mobile application, you agree to these Terms and Service. Please read them carefully.
+          child: Column(children: [Text(''' Welcome to "Destinoz". By using our mobile application, you agree to these Terms and Service. Please read them carefully.
           
 ------ 1. Acceptance of Terms------
           
@@ -17,7 +17,7 @@ By accessing and using "Destinozz" ("the App"), you accept and agree to be bound
           
 ------ 2. Use of the App------
           
-Eligibility: You must be at least 13 years old to use the App.
+Eligibility: There is no age restriction to use the App.
 Personal Use: The App is intended for your personal use only.
 ------ 3. Local Data Storage------
           
@@ -41,10 +41,7 @@ _____pvt.Ltd is not liable for any damages resulting from your use of the App, i
           
 We may update these Terms and Service occasionally. Any changes will be reflected by the "Last Updated" date. Continued use of the App after changes implies acceptance of the new terms.
           
------- 8. Contact Us------
-          
-For questions or concerns about these Terms and Service, contact us at [Your Contact Email].
-By using the App, you agree to these Terms and Service.''')],),
+''')],),
         ),
       ),
     ),);

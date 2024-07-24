@@ -15,7 +15,7 @@ class SinglePicViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: CustomText(text: ''),
         backgroundColor: Colors.blue,
@@ -33,7 +33,7 @@ class SinglePicViewScreen extends StatelessWidget {
               //  
             },
             icon: Icon(Icons.delete),
-            color: Colors.black,
+            color: Colors.white,
           )
         ],
       ),

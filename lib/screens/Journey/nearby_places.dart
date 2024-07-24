@@ -18,6 +18,8 @@ class NearbyPlaceaddPage extends StatefulWidget {
 }
 
 class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
+  var activecolor= Colors.blue ;
+  var inactivecolor=  Color.fromARGB(255, 171, 170, 170);
   late Tripmodel placeobj1;
   final GlobalKey<FormState> placepageformkey = GlobalKey<FormState>();
   final TextEditingController placename = TextEditingController();
@@ -163,10 +165,9 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'please add place name';
-                                  } else if(value.length>18){
+                                  } else if (value.length > 18) {
                                     return 'name cannot exceed 18 characters.';
-                                  }
-                                   else {
+                                  } else {
                                     return null;
                                   }
                                 },
@@ -201,7 +202,7 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                                   } else if (value.trim() ==
                                       value.replaceAll(RegExp(r'[^\d]'), '')) {
                                     return 'Description should not only contain numbers.';
-                                  } else if(value.length>25){
+                                  } else if (value.length > 25) {
                                     return 'Description cannot exceed 25 characters.';
                                   }
                                   return null;
@@ -260,6 +261,7 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
               child: Column(
                 children: [
                   Stepper(
+                  //  connectorColor:MaterialStatePropertyAll(inactivecolor) ,
                     key: ValueKey('key ${steps.length}'),
                     currentStep: _index,
                     onStepCancel: () {
@@ -276,8 +278,10 @@ class NearbyPlaceaddPageState extends State<NearbyPlaceaddPage> {
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Your place is completed')));
+                            const SnackBar(
+                                content: Text('Your place is completed')));
                       }
+                      
                     },
                     onStepTapped: (int index) {
                       setState(() {

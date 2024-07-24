@@ -35,7 +35,7 @@ class _BlogslistState extends State<Blogslist> {
                   MaterialPageRoute(builder: (context) => const AddBlogpage()));},child:const Icon(Icons.add) ,),
       appBar: AppBar(
         title: const CustomText(
-          text: 'Blogs',
+          text: 'Blogs',color: Colors.white
         ),
         backgroundColor: Colors.blue,
       ),
